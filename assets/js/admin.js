@@ -542,6 +542,7 @@ function renderBot() {
   panel.innerHTML = `
     <div class="admin-section-head">
       <div><h2>Discord-Bot</h2><p>Nur für den Master Admin. Alle Einstellungen werden direkt vom Bot übernommen.</p></div>
+      <a class="btn btn-ghost btn-sm" href="${escapeHtml(safeUrl(CONFIG.DISCORD_BOT_INVITE_URL, '#'))}" target="_blank" rel="noopener">${icon('discord')} Bot einladen</a>
       <button class="btn btn-ghost btn-sm" type="button" data-action="bot-refresh">${icon('spark')} Aktualisieren</button>
     </div>
     <div class="admin-stats bot-stats">
@@ -1199,11 +1200,11 @@ function openProductEditor(product) {
           <option value="subscription"${product?.purchase_type === 'subscription' ? ' selected' : ''}>Roblox Abo</option>
           <option value="free"${product?.purchase_type === 'free' ? ' selected' : ''}>Kostenlos</option>
         </select></div>
-        <div class="field"><label for="p-gamepass">Gamepass-ID</label><input id="p-gamepass" name="roblox_gamepass_id" value="${escapeHtml(product?.roblox_gamepass_id || '')}" placeholder="z. B. 1234567890"></div>
+        <div class="field"><label for="p-gamepass">Gamepass-ID</label><input id="p-gamepass" name="roblox_gamepass_id" value="${escapeHtml(product?.roblox_gamepass_id || '')}" placeholder="z. B. 1234567890"><span class="form-hint">Pflicht bei Game-Pass-Produkten. Der Bot erstellt die Discord-Rolle automatisch.</span></div>
         <div class="field"><label for="p-subscription">Abo-ID</label><input id="p-subscription" name="roblox_subscription_id" value="${escapeHtml(product?.roblox_subscription_id || '')}" placeholder="Optional"></div>
       </div>
       <div class="field-row">
-        <div class="field"><label for="p-role">Discord-Rollen-ID</label><input id="p-role" name="discord_role_id" value="${escapeHtml(product?.discord_role_id || '')}" placeholder="Wird automatisch gesetzt"><span class="form-hint">Der Bot legt die Rolle beim Anlegen automatisch an. Nur bei einer bereits vorhandenen Rolle überschreiben.</span></div>
+        <div class="field"><label for="p-role">Discord-Rolle</label><input id="p-role" value="${escapeHtml(product?.discord_role_id || '')}" placeholder="Wird automatisch erstellt" disabled><span class="form-hint">Die Rolle wird beim Anlegen automatisch vom Bot erstellt und beim Löschen wieder entfernt.</span></div>
         <div class="field"><label for="p-download">Download-Link <span class="optional">(kostenlos)</span></label><input id="p-download" name="download_url" value="${escapeHtml(product?.download_url || '')}" placeholder="https://…"></div>
       </div>
       <div class="form-alert form-alert-error" id="product-form-error" hidden></div>
@@ -1267,6 +1268,24 @@ function openProductEditor(product) {
       return;
     }
 
+    const purchaseType = form.elements.purchase_type.value;
+    const gamepassId = form.elements.roblox_gamepass_id.value.trim();
+    const subscriptionId = form.elements.roblox_subscription_id.value.trim();
+    if (purchaseType === 'gamepass' && !gamepassId) {
+      if (errorBox) {
+        errorBox.hidden = false;
+        errorBox.textContent = 'Bitte die Roblox-Game-Pass-ID eingeben.';
+      }
+      return;
+    }
+    if (purchaseType === 'subscription' && !subscriptionId) {
+      if (errorBox) {
+        errorBox.hidden = false;
+        errorBox.textContent = 'Bitte die Roblox-Abo-ID eingeben.';
+      }
+      return;
+    }
+
     const payload = {
       name,
       category: form.elements.category.value.trim() || 'Sonstiges',
@@ -1278,10 +1297,9 @@ function openProductEditor(product) {
       on_sale: form.elements.on_sale.checked,
       discount_percent: form.elements.on_sale.checked ? Math.min(100, Math.max(0, Number(form.elements.discount.value) || 0)) : 0,
       visible: form.elements.visible.checked,
-      purchase_type: form.elements.purchase_type.value,
-      roblox_gamepass_id: form.elements.roblox_gamepass_id.value.trim() || null,
-      roblox_subscription_id: form.elements.roblox_subscription_id.value.trim() || null,
-      discord_role_id: form.elements.discord_role_id.value.trim() || null,
+      purchase_type: purchaseType,
+      roblox_gamepass_id: gamepassId || null,
+      roblox_subscription_id: subscriptionId || null,
       download_url: form.elements.download_url.value.trim() || null
     };
 

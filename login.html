@@ -70,25 +70,19 @@
 
             <div class="auth-note">
               <strong>So funktioniert die Anmeldung</strong>
-              <p style="margin:6px 0 0">Bei der ersten Anmeldung senden wir einen 6-stelligen Code an deine Discord-E-Mail-Adresse. Danach ist dein Konto bestätigt. Optional kannst du im Konto zusätzlich E-Mail-MFA aktivieren – auch dann wird bei jeder Anmeldung ein Code verlangt.</p>
+              <p style="margin:6px 0 0">Bei der ersten Anmeldung senden wir einen Bestätigungslink an deine Discord-E-Mail-Adresse. Öffne den Link, um dein Konto zu bestätigen. Optional kannst du im Konto zusätzlich E-Mail-MFA aktivieren – auch dann wird bei jeder Anmeldung ein Link verlangt.</p>
             </div>
 
             <p class="auth-note">Mit der Anmeldung akzeptierst du, dass dein Konto für Bestellungen, Bewertungen und Discord-Rollen verwendet wird. Es gelten die Regeln der Roblox-Community.</p>
           </div>
 
-          <div id="email-code-panel" hidden>
+          <div id="email-link-panel" hidden>
             <div class="mfa-box">
-              <h2 id="email-code-title">E-Mail bestätigen</h2>
-              <p class="auth-sub" id="email-code-sub">Wir haben einen 6-stelligen Code an <strong id="email-code-target">—</strong> gesendet.</p>
-              <form id="email-code-form" class="form-stack">
-                <div class="field">
-                  <label for="email-code">Bestätigungscode</label>
-                  <input class="input mfa-code-input" id="email-code" name="token" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="\d{6}" required placeholder="000000">
-                </div>
-                <button class="btn btn-primary btn-lg" type="submit">Code prüfen</button>
-              </form>
+              <h2 id="email-link-title">E-Mail bestätigen</h2>
+              <p class="auth-sub" id="email-link-sub">Wir haben einen Bestätigungslink an <strong id="email-link-target">—</strong> gesendet.</p>
+              <p class="form-hint">Öffne den Link in dieser E-Mail. Der Link ist nur begrenzt gültig und funktioniert nur einmal.</p>
               <div class="auth-form-foot" style="justify-content:center;margin-top:14px">
-                <button class="text-btn" type="button" id="email-resend">Code erneut senden</button>
+                <button class="text-btn" type="button" id="email-resend">Link erneut senden</button>
                 <button class="text-btn" type="button" id="email-back">Zurück zur Discord-Anmeldung</button>
               </div>
             </div>

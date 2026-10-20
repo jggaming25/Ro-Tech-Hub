@@ -168,7 +168,7 @@ async function renderAccount() {
     }
     profile.mfa_email_enabled = mfaToggle.checked;
     showAccountMessage(mfaToggle.checked
-      ? 'E-Mail-MFA aktiviert. Beim nächsten Login wird zusätzlich ein Code per E-Mail benötigt.'
+      ? 'E-Mail-MFA aktiviert. Beim nächsten Login wird zusätzlich ein Link per E-Mail benötigt.'
       : 'E-Mail-MFA deaktiviert.', 'success');
   });
 

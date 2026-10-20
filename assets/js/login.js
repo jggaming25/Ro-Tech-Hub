@@ -1,6 +1,6 @@
 import { initApp } from './app.js';
 import {
-  supabase, prepareAuthStorage, fetchProfile, authRedirectUrl,
+  supabase, prepareAuthStorage, authRedirectUrl,
   safeNextUrl, clearAuthStorage
 } from './supabase.js';
 import { toast, setLoading } from './ui.js';
@@ -12,11 +12,9 @@ const next = safeNextUrl(params.get('next'), 'account.html');
 
 const messageBox = document.getElementById('auth-message');
 const discordPanel = document.getElementById('discord-panel');
-const emailPanel = document.getElementById('email-code-panel');
-const emailForm = document.getElementById('email-code-form');
-const emailInput = document.getElementById('email-code');
-const emailTitle = document.getElementById('email-code-title');
-const emailSub = document.getElementById('email-code-sub');
+const linkPanel = document.getElementById('email-link-panel');
+const linkTitle = document.getElementById('email-link-title');
+const linkSub = document.getElementById('email-link-sub');
 const resendButton = document.getElementById('email-resend');
 const backButton = document.getElementById('email-back');
 const discordButton = document.querySelector('[data-provider="discord"]');
@@ -48,10 +46,10 @@ function hideMessage() {
 
 function showPanel(panel) {
   if (discordPanel) discordPanel.hidden = panel !== 'discord';
-  if (emailPanel) emailPanel.hidden = panel !== 'email';
+  if (linkPanel) linkPanel.hidden = panel !== 'link';
 }
 
-async function sendCode() {
+async function sendLoginLink() {
   if (!challengeEmail) return false;
   const { error } = await supabase.auth.signInWithOtp({
     email: challengeEmail,
@@ -61,13 +59,13 @@ async function sendCode() {
     }
   });
   if (error) {
-    showMessage(`Der Code konnte nicht gesendet werden: ${error.message}`);
+    showMessage(`Der Link konnte nicht gesendet werden: ${error.message}`);
     return false;
   }
   return true;
 }
 
-async function startEmailChallenge(targetProfile, mode) {
+async function startEmailLinkChallenge(targetProfile, mode) {
   challengeEmail = targetProfile.email || '';
 
   if (!challengeEmail) {
@@ -78,26 +76,21 @@ async function startEmailChallenge(targetProfile, mode) {
   await supabase.auth.signOut();
   prepareAuthStorage(true);
 
-  showPanel('email');
+  showPanel('link');
   hideMessage();
-  if (emailTitle) {
-    emailTitle.textContent = mode === 'mfa' ? 'Bestätigungscode (MFA)' : 'E-Mail bestätigen';
+  if (linkTitle) {
+    linkTitle.textContent = mode === 'mfa' ? 'Bestätigungslink (MFA)' : 'E-Mail bestätigen';
   }
-  if (emailSub) {
-    emailSub.innerHTML = mode === 'mfa'
-      ? 'E-Mail-MFA ist aktiv. Wir haben einen 6-stelligen Code an <strong id="email-code-target"></strong> gesendet.'
-      : 'Bei der ersten Anmeldung bestätigst du deine E-Mail-Adresse. Wir haben einen 6-stelligen Code an <strong id="email-code-target"></strong> gesendet.';
+  if (linkSub) {
+    linkSub.innerHTML = mode === 'mfa'
+      ? 'E-Mail-MFA ist aktiv. Wir haben einen Bestätigungslink an <strong id="email-link-target"></strong> gesendet.'
+      : 'Bei der ersten Anmeldung bestätigst du deine E-Mail-Adresse. Wir haben einen Bestätigungslink an <strong id="email-link-target"></strong> gesendet.';
   }
-  const target = document.getElementById('email-code-target');
+  const target = document.getElementById('email-link-target');
   if (target) target.textContent = challengeEmail;
 
-  if (emailInput) {
-    emailInput.value = '';
-    emailInput.focus();
-  }
-
-  if (await sendCode()) {
-    toast('Bestätigungscode per E-Mail gesendet.', 'success');
+  if (await sendLoginLink()) {
+    toast('Bestätigungslink per E-Mail gesendet.', 'success');
   }
 }
 
@@ -124,9 +117,9 @@ if (session && profile) {
     }
     window.location.replace(next);
   } else if (!profile.email_verified) {
-    await startEmailChallenge(profile, 'verify');
+    await startEmailLinkChallenge(profile, 'verify');
   } else if (profile.mfa_email_enabled) {
-    await startEmailChallenge(profile, 'mfa');
+    await startEmailLinkChallenge(profile, 'mfa');
   } else {
     window.location.replace(next);
   }
@@ -151,52 +144,12 @@ discordButton?.addEventListener('click', async () => {
   }
 });
 
-emailForm?.addEventListener('submit', async (event) => {
-  event.preventDefault();
-  hideMessage();
-  const token = emailInput?.value.trim() || '';
-  const submit = emailForm.querySelector('button[type="submit"]');
-
-  if (!/^\d{6}$/.test(token)) {
-    showMessage('Bitte den 6-stelligen Code aus der E-Mail eingeben.');
-    return;
-  }
-
-  setLoading(submit, true, 'Prüfen …');
-  prepareAuthStorage(true);
-  const { data, error } = await supabase.auth.verifyOtp({
-    email: challengeEmail,
-    token,
-    type: 'email'
-  });
-  setLoading(submit, false);
-
-  if (error) {
-    showMessage('Code ungültig oder abgelaufen. Bitte fordere einen neuen Code an.');
-    return;
-  }
-
-  const freshProfile = data.user ? await fetchProfile(data.user.id) : null;
-  if (freshProfile?.blocked) {
-    await supabase.auth.signOut();
-    clearAuthStorage();
-    showMessage('Dieser Account ist gesperrt. Bitte wende dich an das Team.');
-    showPanel('discord');
-    return;
-  }
-  if (freshProfile && !freshProfile.email_verified) {
-    await supabase.from('profiles').update({ email_verified: true }).eq('id', freshProfile.id);
-  }
-
-  window.location.replace(next);
-});
-
 resendButton?.addEventListener('click', async () => {
   hideMessage();
   setLoading(resendButton, true, 'Senden …');
-  const sent = await sendCode();
+  const sent = await sendLoginLink();
   setLoading(resendButton, false);
-  if (sent) toast('Neuer Bestätigungscode wurde gesendet.', 'success');
+  if (sent) toast('Neuer Bestätigungslink wurde gesendet.', 'success');
 });
 
 backButton?.addEventListener('click', async () => {

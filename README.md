@@ -39,19 +39,19 @@ bot/.env.example        Vorlage für Server-Geheimnisse
    - **Redirect URLs** ergänzen:
      - `https://jggaming25.github.io/Ro-Tech-Hub/**`
      - `http://localhost:5500/**` (oder den Port deines lokalen Servers)
-5. **Authentication → Providers → Email**: Email-Provider aktiviert lassen. Er wird nur für Bestätigungscodes und MFA benötigt; Passwort-Login ist auf der Website deaktiviert.
+5. **Authentication → Providers → Email**: Email-Provider aktiviert lassen. Er wird nur für Bestätigungslinks und MFA benötigt; Passwort-Login ist auf der Website deaktiviert. Ein eigener SMTP-Server ist für den Start nicht nötig – Supabase versendet die Links über den integrierten E-Mail-Versand (stark limitiert). Für zuverlässigen Produktivbetrieb später SMTP oder einen Mail-Anbieter hinterlegen.
 6. **Authentication → Providers → Discord**: Client-ID und Secret eintragen (Pflicht). Als Redirect/Callback-URL überall verwenden:
    `https://rviulxidohpqgrvbxjqi.supabase.co/auth/v1/callback`
    - Discord-Scopes: `identify email`
    - Google kann deaktiviert bleiben; die Website bietet nur Discord als Login an.
-7. **E-Mail-Code:** Unter **Authentication → Emails → Magic Link** muss der 6-stellige Code enthalten sein:
+7. **E-Mail-Link:** Unter **Authentication → Emails → Magic Link** muss ein Link enthalten sein, standardmäßig über `{{ .ConfirmationURL }}`:
 
    ```html
-   <p>Dein Bestätigungscode: <strong>{{ .Token }}</strong></p>
+   <p>Bestätige deine Anmeldung: <a href="{{ .ConfirmationURL }}">Zum Ro-Tech Hub</a></p>
    ```
 
-   Ohne `{{ .Token }}` können weder die einmalige E-Mail-Bestätigung noch die optionale MFA geprüft werden.
-8. **Erster Login:** Nach der Discord-Anmeldung wird automatisch ein Profil erstellt. Bis die E-Mail einmalig per Code bestätigt wurde, leitet die Anmeldeseite auf die Code-Eingabe um. Wer im Konto E-Mail-MFA aktiviert, bekommt danach bei jeder Anmeldung einen Code.
+   Es wird kein 6-stelliger Code benötigt. Entferne den Link nicht aus dem Template.
+8. **Erster Login:** Nach der Discord-Anmeldung wird automatisch ein Profil erstellt. Bis die E-Mail einmalig per Link bestätigt wurde, leitet die Anmeldeseite auf „Link gesendet“ um. Wer im Konto E-Mail-MFA aktiviert, bekommt danach bei jeder Anmeldung einen Bestätigungslink.
 
 ### Master Admin setzen
 
@@ -96,11 +96,14 @@ Im Developer Portal unter **OAuth2 → URL Generator**:
 - Berechtigungen (empfohlen für den Start): `Administrator`
 - Alternativ minimale Rechte: Rollen verwalten, Mitglieder moderieren, Mitglieder kicken, Mitglieder bannen, Nachrichten verwalten, Kanäle verwalten, Nachrichten senden, Links einbetten, Nachrichtenverlauf lesen
 
-Einladungs-URL (Client-ID bereits eingesetzt):
+Einladungs-URLs:
 
 ```
-https://discord.com/api/oauth2/authorize?client_id=1562221238967869490&permissions=8&scope=bot%20applications.commands
+Bot:    https://discord.com/oauth2/authorize?client_id=1562221238967869490&permissions=8&scope=bot%20applications.commands
+Server: https://discord.gg/evkSq9eH4e
 ```
+
+Die Server-Einladung ist bereits in `assets/js/config.js` als `DISCORD_INVITE_URL` hinterlegt und erscheint im Footer.
 
 ### Wichtige Einstellungen
 
@@ -128,12 +131,12 @@ Jede Moderationsaktion verlangt einen Grund und wird – sofern aktiviert – im
 
 ## 5. Erste Schritte nach dem Setup
 
-1. Als Master Admin per Discord anmelden → **Verwaltung → Produkte** → Beispielprodukte öffnen und Roblox-IDs, Preise und Download-Links eintragen. Die Discord-Rolle wird beim Anlegen automatisch erzeugt.
+1. Als Master Admin per Discord anmelden → **Verwaltung → Produkte** → Produkt anlegen. Für Game-Pass-Produkte reicht die **Roblox-Game-Pass-ID**; Name, Preis und Beschreibung werden im Formular gepflegt. Die Discord-Rolle wird automatisch erzeugt und muss nicht eingetragen werden.
 2. Per Discord anmelden und die E-Mail einmalig bestätigen; die Discord-ID wird automatisch übernommen.
 3. Testkauf durchführen → im Adminbereich unter **Käufe** bestätigen → Bot vergibt die Rolle automatisch.
 4. Bewertung einreichen → im Adminbereich freigeben → erscheint auf Startseite und Bewertungsseite.
-5. Produkt löschen (nur Master Admin): Der Bot entfernt die zugehörige Discord-Rolle, sofern außer dem Master/Owner niemand sie noch besitzt.
-6. Discord-Invite in `assets/js/config.js` bei `DISCORD_INVITE_URL` eintragen (optional).
+5. Produkt löschen (nur Master Admin): Der Bot entfernt die zugehörige Discord-Rolle, sofern außer dem Master niemand sie noch besitzt.
+6. Die Discord-Einladungen sind bereits in `assets/js/config.js` hinterlegt.
 
 ## Hinweise
 
