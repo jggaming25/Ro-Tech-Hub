@@ -84,7 +84,7 @@ Copy-Item .env.example .env
 # .env ausfüllen:
 # DISCORD_TOKEN, DISCORD_CLIENT_ID, DISCORD_GUILD_ID
 # SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY
-# BOT_OWNER_ID (Discord-ID des Master Admins)
+# BOT_OWNER_ID optional; Standard: 1128067644046716938
 npm start
 ```
 
@@ -109,7 +109,7 @@ Die Server-Einladung ist bereits in `assets/js/config.js` als `DISCORD_INVITE_UR
 
 - **Privileged Intents** im Developer Portal aktivieren: `Server Members Intent` und `Message Content Intent`.
 - Die **Bot-Rolle** in der Rollenhierarchie über alle Rollen setzen, die der Bot vergeben/entfernen soll.
-- **Produktrollen:** Beim Anlegen eines Produkts legt der Bot automatisch eine Discord-Rolle an und trägt deren ID am Produkt ein. Beim Löschen eines Produkts wird die Rolle nur entfernt, wenn ihr außer dem Master Admin (`BOT_OWNER_ID`) niemand mehr angehört. Hat noch ein anderer Nutzer die Rolle, wird der Auftrag als `skipped` markiert und im Log gemeldet. Ohne gesetzte `BOT_OWNER_ID` löscht der Bot aus Sicherheitsgründen keine Produktrollen. Der Bot prüft die Auftragswarteschlange alle 15 Sekunden.
+- **Produktrollen:** Beim Anlegen eines Produkts legt der Bot automatisch eine Discord-Rolle an und trägt deren ID am Produkt ein. Beim Löschen eines Produkts wird die Rolle nur entfernt, wenn ihr außer dem Master Admin (`BOT_OWNER_ID`, Standard `1128067644046716938`) niemand mehr angehört. Hat noch ein anderer Nutzer die Rolle, wird der Auftrag als `skipped` markiert und im Log gemeldet. Der Bot prüft die Auftragswarteschlange alle 15 Sekunden.
 - Im Hub unter **Verwaltung → Discord-Bot** (nur Master Admin):
   - Server-ID, Log-Kanal, Willkommens-Kanal, Mute-Rolle eintragen
   - Moderator-Rollen-IDs und Auto-Rollen-IDs (kommagetrennt)
