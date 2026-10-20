@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bewertungen &amp; Vorschläge · Ro-Tech Hub</title>
+  <meta name="description" content="Teile deine Erfahrung mit Ro-Tech Hub Produkten, schlage neue Ideen vor und lies echte Community-Bewertungen.">
+  <meta name="theme-color" content="#ff7a1a">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/theme-init.js"></script>
+  <script src="assets/js/guard.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Zum Inhalt springen</a>
+  <div id="site-header"></div>
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="container">
+        <span class="eyebrow">Community</span>
+        <h1>Deine Stimme zählt.</h1>
+        <p>Bewerte Produkte, teile Verbesserungsvorschläge und hilf anderen Creatorn bei der Auswahl.</p>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container">
+        <div class="tabs" role="tablist" aria-label="Bewertungsbereiche">
+          <button class="tab is-active" type="button" data-review-tab="review" role="tab" aria-selected="true">Bewertung schreiben</button>
+          <button class="tab" type="button" data-review-tab="suggestion" role="tab" aria-selected="false">Produkt vorschlagen</button>
+          <button class="tab" type="button" data-review-tab="mine" role="tab" aria-selected="false">Meine Beiträge</button>
+        </div>
+
+        <div data-review-panel="review">
+          <div class="review-layout">
+            <div class="panel-card">
+              <h2>Produkt bewerten</h2>
+              <p class="muted-text">Deine Bewertung wird vor der Veröffentlichung von einem Admin geprüft.</p>
+
+              <div id="review-auth-gate" hidden></div>
+
+              <form id="review-form" class="form-stack" hidden>
+                <div class="field">
+                  <label for="review-product">Produkt</label>
+                  <select class="input select" id="review-product" name="product" required>
+                    <option value="">Produkt auswählen …</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label id="rating-label">Bewertung</label>
+                  <div class="rating-input" id="rating-input" role="radiogroup" aria-labelledby="rating-label">
+                    <button type="button" data-rating="1" role="radio" aria-checked="false" aria-label="1 von 5 Sternen">
+                      <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2.6 2.9 5.9 6.5.9-4.7 4.6 1.1 6.5-5.8-3.1-5.8 3.1 1.1-6.5L2.6 9.4l6.5-.9L12 2.6Z"/></svg>
+                    </button>
+                    <button type="button" data-rating="2" role="radio" aria-checked="false" aria-label="2 von 5 Sternen">
+                      <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2.6 2.9 5.9 6.5.9-4.7 4.6 1.1 6.5-5.8-3.1-5.8 3.1 1.1-6.5L2.6 9.4l6.5-.9L12 2.6Z"/></svg>
+                    </button>
+                    <button type="button" data-rating="3" role="radio" aria-checked="false" aria-label="3 von 5 Sternen">
+                      <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2.6 2.9 5.9 6.5.9-4.7 4.6 1.1 6.5-5.8-3.1-5.8 3.1 1.1-6.5L2.6 9.4l6.5-.9L12 2.6Z"/></svg>
+                    </button>
+                    <button type="button" data-rating="4" role="radio" aria-checked="false" aria-label="4 von 5 Sternen">
+                      <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2.6 2.9 5.9 6.5.9-4.7 4.6 1.1 6.5-5.8-3.1-5.8 3.1 1.1-6.5L2.6 9.4l6.5-.9L12 2.6Z"/></svg>
+                    </button>
+                    <button type="button" data-rating="5" role="radio" aria-checked="false" aria-label="5 von 5 Sternen">
+                      <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2.6 2.9 5.9 6.5.9-4.7 4.6 1.1 6.5-5.8-3.1-5.8 3.1 1.1-6.5L2.6 9.4l6.5-.9L12 2.6Z"/></svg>
+                    </button>
+                  </div>
+                </div>
+                <div class="field">
+                  <label for="review-content">Deine Bewertung</label>
+                  <textarea id="review-content" name="content" rows="5" required placeholder="Was hat dir gefallen? Was können wir verbessern?"></textarea>
+                  <span class="counter" id="review-counter">0 / 500 Zeichen (ohne Leerzeichen)</span>
+                </div>
+                <div class="form-alert form-alert-error" id="review-form-message" hidden></div>
+                <button class="btn btn-primary" type="submit">Bewertung einreichen</button>
+              </form>
+            </div>
+
+            <aside class="review-side">
+              <div class="info-card">
+                <h3>So bewerten wir</h3>
+                <p>Jede Bewertung wird manuell geprüft. Wir achten auf Ehrlichkeit, konkrete Erfahrungen und respektvolle Formulierungen.</p>
+                <ul>
+                  <li>1–500 Zeichen ohne Leerzeichen</li>
+                  <li>Eine Bewertung pro Produkt</li>
+                  <li>Keine Links, Werbung oder Beleidigungen</li>
+                  <li>Bearbeitung nur durch das Team</li>
+                </ul>
+              </div>
+              <div class="info-card">
+                <h3>Warum eine Bewertung?</h3>
+                <p>Dein Feedback hilft uns, Produkte zu verbessern und anderen Creatorn eine ehrliche Entscheidungsgrundlage zu geben.</p>
+              </div>
+            </aside>
+          </div>
+        </div>
+
+        <div data-review-panel="suggestion" hidden>
+          <div class="review-layout">
+            <div class="panel-card">
+              <h2>Produkt vorschlagen</h2>
+              <p class="muted-text">Du vermisst ein Script, Asset oder Tool? Sag uns, was du brauchst.</p>
+
+              <form id="suggestion-form" class="form-stack" hidden>
+                <div class="field">
+                  <label for="suggestion-name">Produktname</label>
+                  <input id="suggestion-name" name="name" type="text" required minlength="2" maxlength="120" placeholder="z. B. Advanced NPC Dialogue System">
+                </div>
+                <div class="field">
+                  <label for="suggestion-description">Beschreibung</label>
+                  <textarea id="suggestion-description" name="description" rows="5" required minlength="5" maxlength="2000" placeholder="Was soll das Produkt können? Für wen ist es gedacht?"></textarea>
+                  <span class="counter" id="suggestion-counter">0 / 2000 Zeichen</span>
+                </div>
+                <div class="field-row">
+                  <div class="field">
+                    <label for="suggestion-category">Kategorie <span class="optional">(optional)</span></label>
+                    <input id="suggestion-category" name="category" type="text" maxlength="40" placeholder="z. B. Scripts">
+                  </div>
+                  <div class="field">
+                    <label for="suggestion-link">Referenz-Link <span class="optional">(optional)</span></label>
+                    <input id="suggestion-link" name="link" type="url" maxlength="300" placeholder="https://…">
+                  </div>
+                </div>
+                <div class="form-alert form-alert-error" id="suggestion-form-message" hidden></div>
+                <button class="btn btn-primary" type="submit">Vorschlag einreichen</button>
+              </form>
+            </div>
+
+            <aside class="review-side">
+              <div class="info-card">
+                <h3>Was passiert mit meinem Vorschlag?</h3>
+                <p>Ein Admin prüft deine Idee und meldet sich über den Status in „Meine Beiträge“. Angenommene Vorschläge fließen direkt in die Produktplanung ein.</p>
+                <ul>
+                  <li>Status: In Prüfung → Freigegeben oder Abgelehnt</li>
+                  <li>Du erhältst eine Benachrichtigung bei Änderungen</li>
+                  <li>Solange der Vorschlag offen ist, kannst du ihn zurückziehen</li>
+                </ul>
+              </div>
+            </aside>
+          </div>
+        </div>
+
+        <div data-review-panel="mine" hidden>
+          <div class="panel-card" id="my-submissions">
+            <h2>Meine Beiträge</h2>
+            <p class="muted-text">Der aktuelle Status deiner Bewertungen und Produktvorschläge.</p>
+            <div id="my-reviews"></div>
+            <div id="my-suggestions"></div>
+            <div id="my-empty" hidden>
+              <div class="empty-state">
+                <div class="empty-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3Z"/></svg>
+                </div>
+                <h3>Noch keine Beiträge</h3>
+                <p>Reiche deine erste Bewertung oder einen Produktvorschlag ein.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="latest-reviews-section">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Veröffentlicht</span>
+            <h2 class="section-title">Neueste Bewertungen</h2>
+            <p class="section-text">Freigegebene Stimmen aus der Community.</p>
+          </div>
+        </div>
+        <div class="quote-grid" id="latest-reviews"></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <div id="device-block" class="device-block">
+    <div class="device-card">
+      <span class="device-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      </span>
+      <h1>Desktop erforderlich</h1>
+      <p>Der Ro-Tech Hub ist für die Nutzung am Computer optimiert. Bitte öffne die Seite auf einem Desktop- oder Laptop-Gerät mit Maus und Tastatur.</p>
+    </div>
+  </div>
+
+  <script type="module" src="assets/js/reviews.js"></script>
+</body>
+</html>

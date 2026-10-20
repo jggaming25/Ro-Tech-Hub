@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <defs>
+    <linearGradient id="a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#170d13"/><stop offset="1" stop-color="#0a0708"/></linearGradient>
+    <linearGradient id="b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff9a4d"/><stop offset="1" stop-color="#ff3d00"/></linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#a)"/>
+  <g opacity=".8">
+    <polygon points="400,60 640,180 640,350 400,460 160,350 160,180" fill="none" stroke="url(#b)" stroke-width="2"/>
+    <polygon points="400,130 575,215 575,325 400,395 225,325 225,215" fill="#ff6a00" opacity=".13"/>
+    <polygon points="400,205 500,255 500,305 400,345 300,305 300,255" fill="url(#b)" opacity=".8"/>
+  </g>
+  <text x="60" y="100" fill="#ffd8bd" font-family="Arial" font-size="18" letter-spacing="7">3D ASSETS</text>
+  <text x="60" y="165" fill="#fff6ef" font-family="Arial" font-size="54" font-weight="700">APEX VAULT</text>
+  <text x="60" y="200" fill="#bfa79a" font-family="Arial" font-size="17" letter-spacing="3">MODELS · MAPS · EFFECTS</text>
+</svg>

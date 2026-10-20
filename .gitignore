@@ -1,0 +1,27 @@
+# Secrets
+.env
+.env.*
+!.env.example
+bot/.env
+bot/.env.*
+!bot/.env.example
+
+# Dependencies
+node_modules/
+bot/node_modules/
+
+# Logs & temp
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Supabase CLI
+supabase/.temp/
+supabase/.branches/

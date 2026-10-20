@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <defs>
+    <linearGradient id="a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#210f08"/><stop offset="1" stop-color="#0d0907"/></linearGradient>
+    <linearGradient id="b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffb26e"/><stop offset="1" stop-color="#ff5a00"/></linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#a)"/>
+  <g fill="none" stroke="url(#b)" opacity=".7">
+    <path d="M90 420C190 250 320 390 420 220s190 70 290-100" stroke-width="3"/>
+    <path d="M90 460C200 300 330 430 440 270s180 50 280-120" stroke-width="2" opacity=".5"/>
+  </g>
+  <circle cx="560" cy="210" r="120" fill="#ff6b16" opacity=".2"/>
+  <circle cx="560" cy="210" r="70" fill="none" stroke="#ffb174" stroke-width="2"/>
+  <circle cx="560" cy="210" r="24" fill="#ff7a1a"/>
+  <text x="60" y="105" fill="#ffd8bd" font-family="Arial" font-size="18" letter-spacing="7">SCRIPT PACK</text>
+  <text x="60" y="170" fill="#fff6ef" font-family="Arial" font-size="54" font-weight="700">NEON CORE</text>
+  <text x="60" y="205" fill="#bfa79a" font-family="Arial" font-size="17" letter-spacing="3">AUTOMATION · UI · PERFORMANCE</text>
+</svg>

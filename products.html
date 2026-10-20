@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Produkte · Ro-Tech Hub</title>
+  <meta name="description" content="Der komplette Katalog: Roblox-Scripts, 3D-Assets, UI-Vorlagen, Bundles und Developer-Tools. Filtere nach Kategorie, Aktion und Preis.">
+  <meta name="theme-color" content="#ff7a1a">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/theme-init.js"></script>
+  <script src="assets/js/guard.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Zum Inhalt springen</a>
+  <div id="site-header"></div>
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="container">
+        <span class="eyebrow">Katalog</span>
+        <h1>Alles für dein nächstes Roblox-Projekt.</h1>
+        <p>Scripts, Assets, Vorlagen und Tools – filterbar, transparent und sofort verfügbar.</p>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container">
+        <div class="catalog-toolbar">
+          <div class="toolbar-top">
+            <div class="search-field">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+              <input type="search" id="product-search" placeholder="Produkte durchsuchen …" autocomplete="off" aria-label="Produkte durchsuchen">
+            </div>
+            <select class="input select" id="sort-products" aria-label="Sortierung">
+              <option value="newest">Neueste zuerst</option>
+              <option value="price-asc">Preis aufsteigend</option>
+              <option value="price-desc">Preis absteigend</option>
+              <option value="rating">Beste Bewertung</option>
+            </select>
+            <div class="filter-toggles">
+              <label class="check-row"><input type="checkbox" id="filter-sale"> Nur im Verkauf</label>
+              <label class="check-row"><input type="checkbox" id="filter-discount"> Nur Angebote</label>
+            </div>
+          </div>
+          <div class="chip-row" id="category-chips" aria-label="Kategorien"></div>
+          <div class="toolbar-bottom">
+            <span class="catalog-count" id="product-count">Produkte werden geladen …
+
+            </span>
+            <span class="text-tiny muted-text">Alle Preise inkl. MwSt. · Zahlung über Roblox</span>
+          </div>
+        </div>
+
+        <div class="product-grid" id="products-grid"></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <div id="device-block" class="device-block">
+    <div class="device-card">
+      <span class="device-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      </span>
+      <h1>Desktop erforderlich</h1>
+      <p>Der Ro-Tech Hub ist für die Nutzung am Computer optimiert. Bitte öffne die Seite auf einem Desktop- oder Laptop-Gerät mit Maus und Tastatur.</p>
+    </div>
+  </div>
+
+  <script type="module" src="assets/js/products.js"></script>
+</body>
+</html>

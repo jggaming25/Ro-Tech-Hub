@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Anmelden · Ro-Tech Hub</title>
+  <meta name="description" content="Melde dich im Ro-Tech Hub ausschließlich mit Discord an. E-Mail wird nur für die Bestätigung bei der ersten Anmeldung und die optionale MFA genutzt.">
+  <meta name="theme-color" content="#ff7a1a">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/theme-init.js"></script>
+  <script src="assets/js/guard.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Zum Inhalt springen</a>
+  <div id="site-header"></div>
+
+  <main id="main" class="auth-page">
+    <div class="container">
+      <div class="auth-layout">
+        <aside class="auth-visual">
+          <div>
+            <span class="eyebrow">Ro-Tech Hub</span>
+            <h1>Dein Zugang zu besseren Roblox-Projekten.</h1>
+            <p>Ein Konto, alle Produkte: Bestellungen verfolgen, Bewertungen einreichen und Discord-Rollen automatisch erhalten.</p>
+            <div class="auth-feature-list">
+              <div class="auth-feature">
+                <span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12 5 5L20 6"/></svg>
+                </span>
+                Anmeldung ausschließlich über Discord
+              </div>
+              <div class="auth-feature">
+                <span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 6v6c0 4.5 3 7.6 7 9 4-1.4 7-4.5 7-9V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+                </span>
+                E-Mail-Bestätigung &amp; optionale MFA
+              </div>
+              <div class="auth-feature">
+                <span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v9H4v-9M2 7h20v5H2zM12 7v14"/></svg>
+                </span>
+                Kaufhistorie &amp; Downloads
+              </div>
+              <div class="auth-feature">
+                <span>
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.6 5.6A18 18 0 0 0 15.2 4l-.6 1.3a16 16 0 0 0-5.2 0L8.8 4a18 18 0 0 0-4.4 1.6C1.6 9.5.8 13.2 1.2 16.9a18 18 0 0 0 5.4 2.7l1.1-1.8c-.6-.2-1.2-.5-1.7-.9l.4-.3c3.3 1.5 6.9 1.5 10.1 0l.4.3c-.5.4-1.1.7-1.7.9l1.1 1.8a18 18 0 0 0 5.4-2.7c.5-4.3-.8-8-2.1-11.3ZM8.5 14.6c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2Zm7 0c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2Z"/></svg>
+                </span>
+                Discord-Verknüpfung für Rollen
+              </div>
+            </div>
+          </div>
+          <p class="form-hint" style="position:relative;z-index:2;color:rgba(255,236,222,.55)">30 Tage angemeldet bleiben.</p>
+        </aside>
+
+        <div class="auth-card">
+          <div class="form-alert form-alert-error" id="auth-message" hidden></div>
+
+          <div id="discord-panel">
+            <h2>Mit Discord anmelden</h2>
+            <p class="auth-sub">Kein Passwort, keine separate Registrierung: Beim ersten Login wird automatisch ein Hub-Konto mit deinem Discord-Profil erstellt.</p>
+
+            <button class="oauth-btn oauth-btn-wide" type="button" data-provider="discord">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.6 5.6A18 18 0 0 0 15.2 4l-.6 1.3a16 16 0 0 0-5.2 0L8.8 4a18 18 0 0 0-4.4 1.6C1.6 9.5.8 13.2 1.2 16.9a18 18 0 0 0 5.4 2.7l1.1-1.8c-.6-.2-1.2-.5-1.7-.9l.4-.3c3.3 1.5 6.9 1.5 10.1 0l.4.3c-.5.4-1.1.7-1.7.9l1.1 1.8a18 18 0 0 0 5.4-2.7c.5-4.3-.8-8-2.1-11.3ZM8.5 14.6c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2Zm7 0c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2Z"/></svg>
+              Mit Discord anmelden
+            </button>
+
+            <div class="auth-note">
+              <strong>So funktioniert die Anmeldung</strong>
+              <p style="margin:6px 0 0">Bei der ersten Anmeldung senden wir einen 6-stelligen Code an deine Discord-E-Mail-Adresse. Danach ist dein Konto bestätigt. Optional kannst du im Konto zusätzlich E-Mail-MFA aktivieren – auch dann wird bei jeder Anmeldung ein Code verlangt.</p>
+            </div>
+
+            <p class="auth-note">Mit der Anmeldung akzeptierst du, dass dein Konto für Bestellungen, Bewertungen und Discord-Rollen verwendet wird. Es gelten die Regeln der Roblox-Community.</p>
+          </div>
+
+          <div id="email-code-panel" hidden>
+            <div class="mfa-box">
+              <h2 id="email-code-title">E-Mail bestätigen</h2>
+              <p class="auth-sub" id="email-code-sub">Wir haben einen 6-stelligen Code an <strong id="email-code-target">—</strong> gesendet.</p>
+              <form id="email-code-form" class="form-stack">
+                <div class="field">
+                  <label for="email-code">Bestätigungscode</label>
+                  <input class="input mfa-code-input" id="email-code" name="token" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="\d{6}" required placeholder="000000">
+                </div>
+                <button class="btn btn-primary btn-lg" type="submit">Code prüfen</button>
+              </form>
+              <div class="auth-form-foot" style="justify-content:center;margin-top:14px">
+                <button class="text-btn" type="button" id="email-resend">Code erneut senden</button>
+                <button class="text-btn" type="button" id="email-back">Zurück zur Discord-Anmeldung</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <div id="device-block" class="device-block">
+    <div class="device-card">
+      <span class="device-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      </span>
+      <h1>Desktop erforderlich</h1>
+      <p>Der Ro-Tech Hub ist für die Nutzung am Computer optimiert. Bitte öffne die Seite auf einem Desktop- oder Laptop-Gerät mit Maus und Tastatur.</p>
+    </div>
+  </div>
+
+  <script type="module" src="assets/js/login.js"></script>
+</body>
+</html>

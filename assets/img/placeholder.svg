@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1b110d"/>
+      <stop offset=".55" stop-color="#2a160c"/>
+      <stop offset="1" stop-color="#0e0a08"/>
+    </linearGradient>
+    <linearGradient id="bolt" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffb174"/>
+      <stop offset="1" stop-color="#ff5c00"/>
+    </linearGradient>
+    <radialGradient id="glow" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#ff6a00" stop-opacity=".45"/>
+      <stop offset="1" stop-color="#ff6a00" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <circle cx="620" cy="100" r="260" fill="url(#glow)"/>
+  <circle cx="150" cy="430" r="220" fill="url(#glow)" opacity=".55"/>
+  <g opacity=".22" stroke="#ffb174" fill="none">
+    <circle cx="640" cy="120" r="80"/>
+    <circle cx="640" cy="120" r="130"/>
+    <circle cx="640" cy="120" r="180"/>
+  </g>
+  <path d="M436 76 236 316h118l-30 120 202-246H404l32-114Z" fill="url(#bolt)" opacity=".95"/>
+  <text x="60" y="438" fill="#fff3ea" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" letter-spacing="8">RO-TECH HUB</text>
+  <text x="62" y="470" fill="#cbb5a7" font-family="Arial, Helvetica, sans-serif" font-size="15" letter-spacing="5">PREMIUM DIGITAL GOODS</text>
+</svg>

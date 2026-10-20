@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <defs>
+    <linearGradient id="a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#20100a"/><stop offset="1" stop-color="#0b0806"/></linearGradient>
+    <linearGradient id="b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffcf9e"/><stop offset="1" stop-color="#ff6a00"/></linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#a)"/>
+  <g opacity=".9">
+    <circle cx="580" cy="230" r="140" fill="none" stroke="url(#b)" stroke-width="2"/>
+    <circle cx="580" cy="230" r="95" fill="none" stroke="url(#b)" stroke-width="2" opacity=".6"/>
+    <circle cx="580" cy="230" r="50" fill="url(#b)" opacity=".9"/>
+    <path d="M580 40v60M580 360v60M390 230h60M710 230h60" stroke="#ffb174" stroke-width="2"/>
+  </g>
+  <text x="60" y="105" fill="#ffd8bd" font-family="Arial" font-size="18" letter-spacing="7">PRO BUNDLE</text>
+  <text x="60" y="170" fill="#fff6ef" font-family="Arial" font-size="54" font-weight="700">ORBIT SUITE</text>
+  <text x="60" y="205" fill="#bfa79a" font-family="Arial" font-size="17" letter-spacing="3">EVERYTHING · IN · ONE</text>
+</svg>
