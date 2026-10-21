@@ -66,6 +66,14 @@ const COLORS = {
   muted: 0x95a5a6
 };
 
+const DEFAULT_BANNED_WORDS = [
+  'hurensohn', 'hure', 'wichser', 'arschloch', 'fotze',
+  'bastard', 'missgeburt', 'spast', 'schwuchtel', 'kanake',
+  'neger', 'nazi', 'heil hitler', 'sieg heil', 'judensau',
+  'huso', 'nigger', 'faggot', 'cunt', 'motherfucker',
+  'bitch', 'retard', 'slut', 'whore', 'pisser'
+];
+
 const DEFAULT_SETTINGS = {
   guild_id: DISCORD_GUILD_ID || null,
   mod_log_channel_id: null,
@@ -80,7 +88,7 @@ const DEFAULT_SETTINGS = {
   automod_links: false,
   automod_caps: true,
   automod_spam: true,
-  automod_banned_words: [],
+  automod_banned_words: [...DEFAULT_BANNED_WORDS],
   automod_action: 'delete',
   log_messages: true,
   log_members: true,
@@ -113,6 +121,9 @@ async function loadSettings(force = false) {
     console.error('[settings]', error.message);
   } else if (data) {
     settings = { ...DEFAULT_SETTINGS, ...data };
+    if (!Array.isArray(settings.automod_banned_words) || settings.automod_banned_words.length === 0) {
+      settings.automod_banned_words = [...DEFAULT_BANNED_WORDS];
+    }
   }
   settingsLoadedAt = Date.now();
   if (client.user) {
@@ -1172,6 +1183,20 @@ client.on(Events.InteractionCreate, async (interaction) => {
   }
 });
 
+function escapeRegExp(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function containsBannedWord(content, words) {
+  const text = String(content || '').toLowerCase();
+  return (words || []).some((word) => {
+    const term = String(word || '').trim().toLowerCase();
+    if (!term) return false;
+    const pattern = escapeRegExp(term).replace(/\s+/g, '\\s+');
+    return new RegExp(`(^|[^a-z0-9äöüß])${pattern}([^a-z0-9äöüß]|$)`, 'i').test(text);
+  });
+}
+
 client.on(Events.MessageCreate, async (message) => {
   if (!message.inGuild() || message.author.bot || message.system) return;
   if (!settings.automod_enabled) return;
@@ -1179,7 +1204,6 @@ client.on(Events.MessageCreate, async (message) => {
   if (!member || isModerator(member)) return;
 
   const content = message.content || '';
-  const lower = content.toLowerCase();
   const reasons = [];
 
   if (settings.automod_invites && /(discord\.gg|discord(?:app)?\.com\/invite)\//i.test(content)) {
@@ -1189,7 +1213,7 @@ client.on(Events.MessageCreate, async (message) => {
     reasons.push('Externer Link');
   }
   const bannedWords = (settings.automod_banned_words || []).filter(Boolean);
-  if (bannedWords.some((word) => lower.includes(String(word).toLowerCase()))) {
+  if (containsBannedWord(content, bannedWords)) {
     reasons.push('Verbotenes Wort');
   }
   if (settings.automod_caps) {

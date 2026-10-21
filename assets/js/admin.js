@@ -9,6 +9,14 @@ import {
 
 const { session, profile: me } = await initApp('admin');
 
+const DEFAULT_BANNED_WORDS = [
+  'hurensohn', 'hure', 'wichser', 'arschloch', 'fotze',
+  'bastard', 'missgeburt', 'spast', 'schwuchtel', 'kanake',
+  'neger', 'nazi', 'heil hitler', 'sieg heil', 'judensau',
+  'huso', 'nigger', 'faggot', 'cunt', 'motherfucker',
+  'bitch', 'retard', 'slut', 'whore', 'pisser'
+];
+
 const gate = document.getElementById('admin-gate');
 const dashboard = document.getElementById('admin-dashboard');
 const panel = document.getElementById('admin-panel');
@@ -280,7 +288,7 @@ function renderProducts() {
     </div>
     <div class="admin-card table-card">
       <table class="data-table">
-        <thead><tr><th>Produkt</th><th>Preis</th><th>Verkauf</th><th>Sichtbarkeit</th><th></th></tr></thead>
+        <thead><tr><th>Produkt</th><th>Preis (Robux)</th><th>Verkauf</th><th>Sichtbarkeit</th><th></th></tr></thead>
         <tbody>
           ${products.map((product) => {
             const rating = ratings.get(product.id);
@@ -418,9 +426,11 @@ function filterOption(value, label, selected) {
 }
 
 function renderNotifications() {
+  const adminRecipients = users.filter((user) => user.rank !== 'user');
+  const userRecipients = users.filter((user) => user.rank === 'user');
   panel.innerHTML = `
     <div class="admin-section-head">
-      <div><h2>Benachrichtigungen</h2><p>Wichtige Hinweise für alle Nutzer veröffentlichen. Persönliche Statusmeldungen werden automatisch erzeugt.</p></div>
+      <div><h2>Benachrichtigungen</h2><p>Wichtige Hinweise für alle Nutzer, alle Admins oder einzelne Empfänger veröffentlichen.</p></div>
     </div>
     <div class="admin-columns">
       <section class="admin-card">
@@ -428,6 +438,12 @@ function renderNotifications() {
         <form id="admin-notification-form" class="form-stack">
           <div class="field"><label for="notif-title">Titel</label><input id="notif-title" name="title" required maxlength="160" placeholder="z. B. Neue Aktion verfügbar"></div>
           <div class="field"><label for="notif-body">Text</label><textarea id="notif-body" name="body" rows="4" maxlength="1000" placeholder="Was sollen die Nutzer wissen?"></textarea></div>
+          <div class="field"><label for="notif-target">Empfänger</label><select id="notif-target" name="target" class="input select" required>
+            <option value="all">Alle Nutzer</option>
+            ${adminRecipients.length ? '<option value="admins">Alle Admins &amp; Master</option>' : ''}
+            ${adminRecipients.length ? `<optgroup label="Admins &amp; Master">${adminRecipients.map((user) => `<option value="${escapeHtml(user.id)}">${escapeHtml(userName(user))}${user.email ? ` (${escapeHtml(user.email)})` : ''}</option>`).join('')}</optgroup>` : ''}
+            ${userRecipients.length ? `<optgroup label="Nutzer">${userRecipients.map((user) => `<option value="${escapeHtml(user.id)}">${escapeHtml(userName(user))}${user.email ? ` (${escapeHtml(user.email)})` : ''}</option>`).join('')}</optgroup>` : ''}
+          </select></div>
           <div class="field-row">
             <div class="field"><label for="notif-kind">Art</label><select id="notif-kind" name="kind" class="input select">
               <option value="info">Info</option><option value="success">Erfolg</option><option value="warning">Warnung</option><option value="sale">Aktion</option>
@@ -441,7 +457,7 @@ function renderNotifications() {
       <section class="admin-card">
         <div class="admin-card-head"><h3>Hinweise</h3></div>
         <ul class="info-list">
-          <li>Globale Mitteilungen erscheinen in der Glocke aller angemeldeten Nutzer.</li>
+          <li>Empfänger: alle Nutzer, alle Admins oder ein einzelner Account.</li>
           <li>Desktop-Meldungen werden nur angezeigt, wenn der Browser es erlaubt und der Nutzer es aktiviert hat.</li>
           <li>Persönliche Meldungen entstehen automatisch bei Bewertungs-, Vorschlags- und Kaufstatus.</li>
           <li>Deaktivierte Mitteilungen verschwinden sofort aus der Box.</li>
@@ -526,7 +542,7 @@ function renderBot() {
     mod_role_ids: [], auto_role_ids: [], welcome_enabled: false,
     welcome_message: 'Willkommen {user} auf {server}!', automod_enabled: false,
     automod_invites: true, automod_links: false, automod_caps: true, automod_spam: true,
-    automod_banned_words: [], automod_action: 'delete', log_messages: true, log_members: true,
+    automod_banned_words: DEFAULT_BANNED_WORDS, automod_action: 'delete', log_messages: true, log_members: true,
     log_moderation: true, dm_on_action: true, warn_timeout_at: 3, warn_ban_at: 0,
     purchases_enabled: true, bot_activity: 'Ro-Tech Hub', disabled_commands: []
   };
@@ -597,7 +613,7 @@ function renderBot() {
             <option value="delete"${s.automod_action === 'delete' ? ' selected' : ''}>Nur löschen</option>
             <option value="timeout"${s.automod_action === 'timeout' ? ' selected' : ''}>Löschen + 10 Min Timeout</option>
           </select></div>
-          <div class="field"><label for="bot-banned-words">Verbotene Wörter</label><textarea id="bot-banned-words" name="automod_banned_words" rows="3" placeholder="Komma- oder zeilengetrennt">${escapeHtml((s.automod_banned_words || []).join(', '))}</textarea></div>
+          <div class="field"><label for="bot-banned-words">Verbotene Wörter</label><textarea id="bot-banned-words" name="automod_banned_words" rows="3" placeholder="Komma- oder zeilengetrennt">${escapeHtml(((s.automod_banned_words && s.automod_banned_words.length) ? s.automod_banned_words : DEFAULT_BANNED_WORDS).join(', '))}</textarea><span class="form-hint">25 häufige/schwere Begriffe sind voreingestellt. Leeren setzt die Standardliste zurück.</span></div>
         </div>
         <div class="field-row">
           <div class="field"><label for="bot-warn-timeout">Timeout ab Warnungen</label><input id="bot-warn-timeout" name="warn_timeout_at" type="number" min="0" max="20" value="${Number(s.warn_timeout_at) || 0}"><span class="form-hint">0 = deaktiviert. Bei Erreichen wird 10 Min Timeout verhängt.</span></div>
@@ -911,6 +927,7 @@ panel?.addEventListener('submit', async (event) => {
   const title = form.elements.title.value.trim();
   const body = form.elements.body.value.trim();
   const link = form.elements.link.value.trim();
+  const target = form.elements.target.value;
 
   if (errorBox) errorBox.hidden = true;
   if (!title) {
@@ -928,15 +945,32 @@ panel?.addEventListener('submit', async (event) => {
     return;
   }
 
-  setLoading(submit, true, 'Veröffentlichen …');
-  const { error } = await supabase.from('notifications').insert({
+  const recipients = target === 'all'
+    ? [null]
+    : target === 'admins'
+      ? users.filter((user) => user.rank !== 'user').map((user) => user.id)
+      : [target];
+
+  if (!recipients.length) {
+    if (errorBox) {
+      errorBox.hidden = false;
+      errorBox.textContent = 'Es ist kein passender Empfänger vorhanden.';
+    }
+    return;
+  }
+
+  const payload = {
     title,
     body,
     kind: form.elements.kind.value,
     link: link ? safeUrl(link, '') : null,
     is_active: true,
     created_by: me.id
-  });
+  };
+
+  setLoading(submit, true, 'Veröffentlichen …');
+  const rows = recipients.map((userId) => ({ ...payload, user_id: userId }));
+  const { error } = await supabase.from('notifications').insert(rows);
   setLoading(submit, false);
 
   if (error) {
@@ -947,8 +981,17 @@ panel?.addEventListener('submit', async (event) => {
     return;
   }
 
-  await logAction('Benachrichtigung veröffentlicht', null, { title });
-  toast('Benachrichtigung veröffentlicht.', 'success');
+  const targetLabel = target === 'all'
+    ? 'Alle Nutzer'
+    : target === 'admins'
+      ? 'Alle Admins'
+      : userName(userById(target));
+  await logAction('Benachrichtigung veröffentlicht', target === 'all' || target === 'admins' ? null : target, {
+    title,
+    target: targetLabel,
+    recipients: rows.length
+  });
+  toast(`Benachrichtigung an ${targetLabel} gesendet.`, 'success');
   form.reset();
   await refresh();
 });
@@ -1166,6 +1209,9 @@ function openUserDetail(userId) {
 function openProductEditor(product) {
   if (!isMaster(me)) return;
   const isNew = !product;
+  const priceValue = product && product.currency !== 'ROBUX'
+    ? Math.round(Number(product.price || 0) * 100)
+    : (product?.price ?? 0);
   let uploadPromise = null;
   const modal = openModal(`
     <h2 class="modal-title">${isNew ? 'Neues Produkt' : 'Produkt bearbeiten'}</h2>
@@ -1178,11 +1224,7 @@ function openProductEditor(product) {
       </div>
       <div class="field"><label for="p-description">Beschreibung</label><textarea id="p-description" name="description" rows="4" maxlength="3000">${escapeHtml(product?.description || '')}</textarea></div>
       <div class="field-row">
-        <div class="field"><label for="p-price">Preis</label><input id="p-price" name="price" type="number" min="0" step="0.01" value="${product?.price ?? 0}"></div>
-        <div class="field"><label for="p-currency">Währung</label><select id="p-currency" name="currency" class="input select">
-          <option value="EUR"${product?.currency === 'EUR' ? ' selected' : ''}>EUR</option>
-          <option value="USD"${product?.currency === 'USD' ? ' selected' : ''}>USD</option>
-        </select></div>
+        <div class="field"><label for="p-price">Preis in Robux</label><input id="p-price" name="price" type="number" min="0" step="1" value="${priceValue}"><span class="form-hint">Ganze Zahl, z. B. 1200. Wird 1:1 als Roblox-Preis gezahlt.</span></div>
         <div class="field"><label for="p-discount">Rabatt %</label><input id="p-discount" name="discount" type="number" min="0" max="100" value="${product?.discount_percent ?? 0}"></div>
       </div>
       <div class="field"><label for="p-image">Vorschaubild-URL</label><input id="p-image" name="image_url" value="${escapeHtml(product?.image_url || '')}" placeholder="https://… oder assets/img/…">
@@ -1291,8 +1333,8 @@ function openProductEditor(product) {
       category: form.elements.category.value.trim() || 'Sonstiges',
       description: form.elements.description.value.trim(),
       image_url: form.elements.image_url.value.trim() || null,
-      price: Math.max(0, Number(form.elements.price.value) || 0),
-      currency: form.elements.currency.value,
+      price: Math.max(0, Math.round(Number(form.elements.price.value) || 0)),
+      currency: 'ROBUX',
       for_sale: form.elements.for_sale.checked,
       on_sale: form.elements.on_sale.checked,
       discount_percent: form.elements.on_sale.checked ? Math.min(100, Math.max(0, Number(form.elements.discount.value) || 0)) : 0,

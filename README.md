@@ -34,24 +34,25 @@ bot/.env.example        Vorlage für Server-Geheimnisse
 1. Im [Supabase Dashboard](https://supabase.com/dashboard) das Projekt öffnen (`rviulxidohpqgrvbxjqi`).
 2. **SQL Editor → New query**: den kompletten Inhalt von `supabase/schema.sql` ausführen.
 3. Optional danach `supabase/seed.sql` ausführen (Beispielprodukte + Standard-Bot-Einstellungen).
-4. Unter **Authentication → URL Configuration**:
+4. Bei einer bereits eingerichteten Datenbank mit Euro-Preisen einmalig `supabase/migrate_robux.sql` ausführen. Neue Preise werden ausschließlich in Robux gepflegt.
+5. Unter **Authentication → URL Configuration**:
    - **Site URL:** `https://jggaming25.github.io/Ro-Tech-Hub/`
    - **Redirect URLs** ergänzen:
      - `https://jggaming25.github.io/Ro-Tech-Hub/**`
      - `http://localhost:5500/**` (oder den Port deines lokalen Servers)
-5. **Authentication → Providers → Email**: Email-Provider aktiviert lassen. Er wird nur für Bestätigungslinks und MFA benötigt; Passwort-Login ist auf der Website deaktiviert. Ein eigener SMTP-Server ist für den Start nicht nötig – Supabase versendet die Links über den integrierten E-Mail-Versand (stark limitiert). Für zuverlässigen Produktivbetrieb später SMTP oder einen Mail-Anbieter hinterlegen.
-6. **Authentication → Providers → Discord**: Client-ID und Secret eintragen (Pflicht). Als Redirect/Callback-URL überall verwenden:
+6. **Authentication → Providers → Email**: Email-Provider aktiviert lassen. Er wird nur für Bestätigungslinks und MFA benötigt; Passwort-Login ist auf der Website deaktiviert. Ein eigener SMTP-Server ist für den Start nicht nötig – Supabase versendet die Links über den integrierten E-Mail-Versand (stark limitiert). Für zuverlässigen Produktivbetrieb später SMTP oder einen Mail-Anbieter hinterlegen.
+7. **Authentication → Providers → Discord**: Client-ID und Secret eintragen (Pflicht). Als Redirect/Callback-URL überall verwenden:
    `https://rviulxidohpqgrvbxjqi.supabase.co/auth/v1/callback`
    - Discord-Scopes: `identify email`
    - Google kann deaktiviert bleiben; die Website bietet nur Discord als Login an.
-7. **E-Mail-Link:** Unter **Authentication → Emails → Magic Link** muss ein Link enthalten sein, standardmäßig über `{{ .ConfirmationURL }}`:
+8. **E-Mail-Link:** Unter **Authentication → Emails → Magic Link** muss ein Link enthalten sein, standardmäßig über `{{ .ConfirmationURL }}`:
 
    ```html
    <p>Bestätige deine Anmeldung: <a href="{{ .ConfirmationURL }}">Zum Ro-Tech Hub</a></p>
    ```
 
    Es wird kein 6-stelliger Code benötigt. Entferne den Link nicht aus dem Template.
-8. **Erster Login:** Nach der Discord-Anmeldung wird automatisch ein Profil erstellt. Bis die E-Mail einmalig per Link bestätigt wurde, leitet die Anmeldeseite auf „Link gesendet“ um. Wer im Konto E-Mail-MFA aktiviert, bekommt danach bei jeder Anmeldung einen Bestätigungslink.
+9. **Erster Login:** Nach der Discord-Anmeldung wird automatisch ein Profil erstellt. Bis die E-Mail einmalig per Link bestätigt wurde, leitet die Anmeldeseite auf „Link gesendet“ um. Wer im Konto E-Mail-MFA aktiviert, bekommt danach bei jeder Anmeldung einen Bestätigungslink.
 
 ### Master Admin setzen
 
@@ -109,7 +110,7 @@ Die Server-Einladung ist bereits in `assets/js/config.js` als `DISCORD_INVITE_UR
 
 - **Privileged Intents** im Developer Portal aktivieren: `Server Members Intent` und `Message Content Intent`.
 - Die **Bot-Rolle** in der Rollenhierarchie über alle Rollen setzen, die der Bot vergeben/entfernen soll.
-- **Produktrollen:** Beim Anlegen eines Produkts legt der Bot automatisch eine Discord-Rolle an und trägt deren ID am Produkt ein. Beim Löschen eines Produkts wird die Rolle nur entfernt, wenn ihr außer dem Master Admin (`BOT_OWNER_ID`, Standard `1128067644046716938`) niemand mehr angehört. Hat noch ein anderer Nutzer die Rolle, wird der Auftrag als `skipped` markiert und im Log gemeldet. Der Bot prüft die Auftragswarteschlange alle 15 Sekunden.
+- **Produktrollen:** Beim Anlegen eines Produkts legt der Bot automatisch eine Discord-Rolle an und trägt deren ID am Produkt ein. Beim Löschen eines Produkts wird die Rolle nur entfernt, wenn ihr außer dem Master Admin (`BOT_OWNER_ID`, Standard `1128067644046716938`) niemand mehr angehört. Hat noch ein anderer Nutzer die Rolle, wird der Auftrag als `skipped` markiert und im Log gemeldet. Der Bot prüft die Auftragswarteschlange alle 15 Sekunden. Rollen werden nur vergeben oder entfernt, solange der Bot online läuft; bei Offline bleiben die Aufträge in der Warteschlange.
 - Im Hub unter **Verwaltung → Discord-Bot** (nur Master Admin):
   - Server-ID, Log-Kanal, Willkommens-Kanal, Mute-Rolle eintragen
   - Moderator-Rollen-IDs und Auto-Rollen-IDs (kommagetrennt)
@@ -131,7 +132,7 @@ Jede Moderationsaktion verlangt einen Grund und wird – sofern aktiviert – im
 
 ## 5. Erste Schritte nach dem Setup
 
-1. Als Master Admin per Discord anmelden → **Verwaltung → Produkte** → Produkt anlegen. Für Game-Pass-Produkte reicht die **Roblox-Game-Pass-ID**; Name, Preis und Beschreibung werden im Formular gepflegt. Die Discord-Rolle wird automatisch erzeugt und muss nicht eingetragen werden.
+1. Als Master Admin per Discord anmelden → **Verwaltung → Produkte** → Produkt anlegen. Für Game-Pass-Produkte reicht die **Roblox-Game-Pass-ID**; Name, **Preis in Robux** und Beschreibung werden im Formular gepflegt. Die Discord-Rolle wird automatisch erzeugt und muss nicht eingetragen werden.
 2. Per Discord anmelden und die E-Mail einmalig bestätigen; die Discord-ID wird automatisch übernommen.
 3. Testkauf durchführen → im Adminbereich unter **Käufe** bestätigen → Bot vergibt die Rolle automatisch.
 4. Bewertung einreichen → im Adminbereich freigeben → erscheint auf Startseite und Bewertungsseite.

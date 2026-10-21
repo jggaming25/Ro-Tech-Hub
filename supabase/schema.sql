@@ -63,8 +63,8 @@ create table if not exists public.products (
   description text not null default '',
   image_url text,
   category text not null default 'Sonstiges',
-  price numeric(12,2) not null default 0 check (price >= 0),
-  currency text not null default 'EUR',
+  price numeric(12,0) not null default 0 check (price >= 0),
+  currency text not null default 'ROBUX',
   for_sale boolean not null default true,
   on_sale boolean not null default false,
   discount_percent integer not null default 0 check (discount_percent between 0 and 100),
@@ -122,8 +122,8 @@ create table if not exists public.purchases (
   user_id uuid not null references public.profiles(id) on delete cascade,
   product_id uuid references public.products(id) on delete set null,
   product_name text not null,
-  amount numeric(12,2) not null default 0,
-  currency text not null default 'EUR',
+  amount numeric(12,0) not null default 0,
+  currency text not null default 'ROBUX',
   purchase_type public.purchase_type not null default 'gamepass',
   status public.purchase_status not null default 'pending',
   roblox_username text,
@@ -698,7 +698,7 @@ begin
 
   v_amount := case
     when v_product.purchase_type = 'free' then 0
-    when v_product.on_sale then round(v_product.price * (1 - v_product.discount_percent::numeric / 100), 2)
+    when v_product.on_sale then round(v_product.price * (1 - v_product.discount_percent::numeric / 100), 0)
     else v_product.price
   end;
 
@@ -838,7 +838,7 @@ create table if not exists public.bot_settings (
   automod_links boolean not null default false,
   automod_caps boolean not null default true,
   automod_spam boolean not null default true,
-  automod_banned_words text[] not null default '{}',
+  automod_banned_words text[] not null default array['hurensohn','hure','wichser','arschloch','fotze','bastard','missgeburt','spast','schwuchtel','kanake','neger','nazi','heil hitler','sieg heil','judensau','huso','nigger','faggot','cunt','motherfucker','bitch','retard','slut','whore','pisser'],
   automod_action text not null default 'delete' check (automod_action in ('delete', 'timeout')),
   log_messages boolean not null default true,
   log_members boolean not null default true,

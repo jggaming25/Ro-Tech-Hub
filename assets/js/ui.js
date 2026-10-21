@@ -61,13 +61,19 @@ export function safeUrl(value, fallback = '') {
   }
 }
 
-export function formatPrice(value, currency = 'EUR') {
+export function formatPrice(value, currency = 'ROBUX') {
   const number = Number(value);
   if (!Number.isFinite(number)) return '—';
+  if (currency === 'ROBUX' || currency === 'RBX') {
+    return `${new Intl.NumberFormat('de-DE', { maximumFractionDigits: 0 }).format(number)} Robux`;
+  }
+  if (currency === 'EUR') {
+    return `${new Intl.NumberFormat('de-DE', { maximumFractionDigits: 0 }).format(Math.round(number * 100))} Robux`;
+  }
   try {
-    return new Intl.NumberFormat('de-DE', { style: 'currency', currency: currency || 'EUR' }).format(number);
+    return new Intl.NumberFormat('de-DE', { style: 'currency', currency: currency || 'ROBUX' }).format(number);
   } catch (error) {
-    return `${number.toFixed(2)} ${currency || 'EUR'}`;
+    return `${number.toFixed(2)} ${currency || 'ROBUX'}`;
   }
 }
 
@@ -75,6 +81,7 @@ export function effectivePrice(product) {
   const base = Number(product?.price) || 0;
   if (!product?.on_sale || !product?.discount_percent) return base;
   const factor = 1 - Number(product.discount_percent) / 100;
+  if (product.currency === 'ROBUX' || product.currency === 'RBX') return Math.round(base * factor);
   return Math.round(base * factor * 100) / 100;
 }
 
